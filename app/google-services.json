@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "355026565497",
+    "firebase_url": "https://chicagoneighborhoods-220019.firebaseio.com",
+    "project_id": "chicagoneighborhoods-220019",
+    "storage_bucket": "chicagoneighborhoods-220019.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:355026565497:android:07c85b7076203ecf",
+        "android_client_info": {
+          "package_name": "csc472.depaul.edu.chicagoneighborhoods"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "355026565497-ps2a4f1803h1i516np5tbpuv84unsfj0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsuXqbpv8Dac4LdOowT5Jp-5PiQUUb7YA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
