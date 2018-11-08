@@ -26,7 +26,12 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.data.kml.KmlLayer;
 
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
     //vars
@@ -53,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (savedInstanceState != null) {
             mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
         }
-        mMap = (MapView) findViewById(R.id.mapView);
+        mMap = findViewById(R.id.mapView);
         mMap.onCreate(mapViewBundle);
         mMap.getMapAsync(this);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -204,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap map) {
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(CHICAGO.getCenter(), 12));
-        //map.addMarker(new MarkerOptions().position(new LatLng(41.8781, -87.6298)).title("Marker"));
+        map.addMarker(new MarkerOptions().position(new LatLng(41.8781, -87.6298)).title("Marker"));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -212,8 +217,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             return;
         }
         map.setMyLocationEnabled(true);
+        addNeighborhoodsLayerToMap(map);
+    }
 
-
+    private void addNeighborhoodsLayerToMap(GoogleMap map) {
+        try {
+            KmlLayer layer = new KmlLayer(map, R.raw.neighborhoods, getApplicationContext());
+            layer.addLayerToMap();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

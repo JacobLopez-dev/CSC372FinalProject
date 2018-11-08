@@ -39,6 +39,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-places:16.0.0'
     //Google 'nearby'
     implementation 'com.google.android.gms:play-services-nearby:16.0.0'
+    //Google Android Map Utils
+    implementation 'com.google.maps.android:android-maps-utils:0.5+'
 }
 
 apply plugin: 'com.google.gms.google-services'

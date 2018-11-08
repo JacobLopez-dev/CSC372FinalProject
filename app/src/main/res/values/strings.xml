@@ -1,6 +1,4 @@
 <resources>
     <string name="app_name">chicagoNeighborhoods</string>
     <string name="google_map_api_key">AIzaSyC3qQfYpQkWTARb036Cg-rUUI1cxvXkYis</string>
-    <string name="kml_url">https://chicagomap.zolk.com/sources/neighborhoods/source.kml</string>
-
 </resources>
