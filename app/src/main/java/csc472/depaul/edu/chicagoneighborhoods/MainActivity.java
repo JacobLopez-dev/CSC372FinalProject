@@ -1,6 +1,7 @@
 package csc472.depaul.edu.chicagoneighborhoods;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -28,7 +29,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MainActivity extends Activity implements OnMapReadyCallback {
     //vars
     private MapView mMap;
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
