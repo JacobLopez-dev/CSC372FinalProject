@@ -1,7 +1,6 @@
 package csc472.depaul.edu.chicagoneighborhoods;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -33,6 +32,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
+import csc472.depaul.edu.chicagoneighborhoods.strategy.MapDisplayStrategy;
+import csc472.depaul.edu.chicagoneighborhoods.strategy.NavigationItemStrategyFactory;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
     private MapView mMap;
@@ -44,9 +45,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public static final int PERMISSIONS_REQUEST_ENABLE_GPS = 9002;
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 9003;
     private FusedLocationProviderClient mFusedLocationClient;
-    /*private LatLngBounds Chicago = new LatLngBounds(
-            new LatLng(41.8781, 87.6298);
-    )*/
+
     private LatLngBounds CHICAGO = new LatLngBounds(
             new LatLng(41.8781, -87.6298), new LatLng(41.8781, -87.6298));
 
@@ -192,7 +191,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             mapViewBundle = new Bundle();
             outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle);
         }
-
         mMap.onSaveInstanceState(mapViewBundle);
     }
 
@@ -232,8 +230,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             return;
         }
         map.setMyLocationEnabled(true);
-
-
     }
 
     @Override
@@ -256,33 +252,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id){
-
-            case R.id.kml_id:
-                Toast.makeText(getApplicationContext(), "Neighborhood layer", Toast.LENGTH_LONG).show();
-                break;
-
-            case R.id.food_id:
-                Toast.makeText(getApplicationContext(), "food layer", Toast.LENGTH_LONG).show();
-                break;
-
-            case R.id.drink_id:
-                Toast.makeText(getApplicationContext(), "drink layer", Toast.LENGTH_LONG).show();
-                break;
-
-            case R.id.transit_id:
-                Toast.makeText(getApplicationContext(), "transit layer", Toast.LENGTH_LONG).show();
-                break;
-
-            case R.id.crime_id:
-                Toast.makeText(getApplicationContext(), "crime layer", Toast.LENGTH_LONG).show();
-                break;
-        }
-
+        MapDisplayStrategy strategy = NavigationItemStrategyFactory.getMapObjectStrategy(getApplicationContext(), mMap, item);
+        strategy.display(getApplicationContext(), mMap);
         drawerLayout.closeDrawer(GravityCompat.START);
-
         return true;
     }
 }
