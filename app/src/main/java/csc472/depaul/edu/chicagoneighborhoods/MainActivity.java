@@ -11,12 +11,17 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Toast;
-
+import android.support.v7.widget.Toolbar;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -29,9 +34,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
 
-public class MainActivity extends Activity implements OnMapReadyCallback {
-    //vars
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
     private MapView mMap;
+    Toolbar toolbar;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
     public static final int ERROR_DIALOG_REQUEST = 9001;
     public static final int PERMISSIONS_REQUEST_ENABLE_GPS = 9002;
@@ -48,13 +55,25 @@ public class MainActivity extends Activity implements OnMapReadyCallback {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.map_drawer);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navigationView = (NavigationView) findViewById(R.id.map_nav_view);
+
+        navigationView.setNavigationItemSelectedListener(this);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer);
+        drawerLayout.setDrawerListener(toggle);
+        toggle.syncState();
 
         Bundle mapViewBundle = null;
         if (savedInstanceState != null) {
             mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
         }
-        mMap = (MapView) findViewById(R.id.mapView);
+        mMap = findViewById(R.id.mapView);
         mMap.onCreate(mapViewBundle);
         mMap.getMapAsync(this);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -235,4 +254,35 @@ public class MainActivity extends Activity implements OnMapReadyCallback {
         mMap.onLowMemory();
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id){
+
+            case R.id.kml_id:
+                Toast.makeText(getApplicationContext(), "Neighborhood layer", Toast.LENGTH_LONG).show();
+                break;
+
+            case R.id.food_id:
+                Toast.makeText(getApplicationContext(), "food layer", Toast.LENGTH_LONG).show();
+                break;
+
+            case R.id.drink_id:
+                Toast.makeText(getApplicationContext(), "drink layer", Toast.LENGTH_LONG).show();
+                break;
+
+            case R.id.transit_id:
+                Toast.makeText(getApplicationContext(), "transit layer", Toast.LENGTH_LONG).show();
+                break;
+
+            case R.id.crime_id:
+                Toast.makeText(getApplicationContext(), "crime layer", Toast.LENGTH_LONG).show();
+                break;
+        }
+
+        drawerLayout.closeDrawer(GravityCompat.START);
+
+        return true;
+    }
 }

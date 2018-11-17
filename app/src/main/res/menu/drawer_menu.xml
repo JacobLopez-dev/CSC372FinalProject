@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:title="@string/kml_layer"
+            android:id="@+id/kml_id"
+            android:icon="@drawable/ic_kml_24dp"/>
+
+        <item
+            android:title="@string/food_layer"
+            android:id="@+id/food_id"
+            android:icon="@drawable/ic_food_24dp"/>
+
+        <item
+            android:title="@string/drink_layer"
+            android:id="@+id/drink_id"
+            android:icon="@drawable/ic_drink_24dp"/>
+
+        <item
+            android:title="@string/transit_layer"
+            android:id="@+id/transit_id"
+            android:icon="@drawable/ic_transit_24dp"/>
+
+        <item
+            android:title="@string/crime_layer"
+            android:id="@+id/crime_id"
+            android:icon="@drawable/ic_crime_24dp"/>
+
+    </group>
+
+</menu>
