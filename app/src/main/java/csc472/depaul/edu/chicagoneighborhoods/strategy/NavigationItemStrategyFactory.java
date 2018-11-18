@@ -4,8 +4,6 @@ import android.content.Context;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.MapView;
-
 import csc472.depaul.edu.chicagoneighborhoods.R;
 
 public class NavigationItemStrategyFactory {

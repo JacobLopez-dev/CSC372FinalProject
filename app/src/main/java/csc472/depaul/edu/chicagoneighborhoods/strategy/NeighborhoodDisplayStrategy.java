@@ -8,23 +8,14 @@ import com.google.maps.android.data.kml.KmlLayer;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import csc472.depaul.edu.chicagoneighborhoods.R;
+import csc472.depaul.edu.chicagoneighborhoods.csc472.depaul.edu.chicagoneighborhoods.utils.KmlUtils;
 
 public class NeighborhoodDisplayStrategy implements MapDisplayStrategy {
 
     public void displaySelectedData(Context appContext, GoogleMap googleMap) {
-        addNeighborhoodsLayerToMap(appContext, googleMap);
-    }
-
-    private void addNeighborhoodsLayerToMap(Context appContext, GoogleMap map) {
-        try {
-            KmlLayer layer = new KmlLayer(map, R.raw.neighorhoods, appContext);
-            layer.addLayerToMap();
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        KmlUtils.addLayerToMap(appContext, googleMap, R.raw.neighorhoods);
     }
 }

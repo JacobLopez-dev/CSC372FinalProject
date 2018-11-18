@@ -8,9 +8,6 @@ import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,19 +22,19 @@ public class CrimeDisplayStrategy implements MapDisplayStrategy {
 
     @Override
     public void displaySelectedData(Context appContext, GoogleMap googleMap) {
-        addHeatMap(appContext, googleMap);
+        addCrimeHeatMap(appContext, googleMap);
     }
 
-    private void addHeatMap(Context appContext, GoogleMap googleMap) {
+    private void addCrimeHeatMap(Context appContext, GoogleMap googleMap) {
         List<LatLng> list = null;
-        list = readItems(appContext, R.raw.crime);
+        list = readCrimeData(appContext, R.raw.crime);
         heatmapTileProvider = new HeatmapTileProvider.Builder()
                 .data(list)
                 .build();
         tileOverlay = googleMap.addTileOverlay(new TileOverlayOptions().tileProvider(heatmapTileProvider));
     }
 
-    private ArrayList<LatLng> readItems(Context appContext, int resource) {
+    private ArrayList<LatLng> readCrimeData(Context appContext, int resource) {
         ArrayList<LatLng> list = new ArrayList<LatLng>();
         InputStream inputStream = appContext.getResources().openRawResource(resource);
         Scanner coordinatesScanner = new Scanner(inputStream);
