@@ -1,29 +1,54 @@
 package csc472.depaul.edu.chicagoneighborhoods.strategy;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
-
 import android.content.Context;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.TileOverlay;
+import com.google.android.gms.maps.model.TileOverlayOptions;
+import com.google.maps.android.heatmaps.HeatmapTileProvider;
 
-public class CrimeDisplayStrategy implements MapDisplayStrategy, OnMapReadyCallback {
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-   private Context appContext;
-   private MapView mapView;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
-    public CrimeDisplayStrategy(Context appContext, MapView mapView) {
-        this.appContext = appContext;
-        this.mapView = mapView;
-    }
+import csc472.depaul.edu.chicagoneighborhoods.R;
+
+public class CrimeDisplayStrategy implements MapDisplayStrategy {
+
+    private HeatmapTileProvider heatmapTileProvider;
+    private TileOverlay tileOverlay;
 
     @Override
-    public void display(Context appContext, MapView mapView) {
-        mapView.getMapAsync(this::onMapReady);
+    public void displaySelectedData(Context appContext, GoogleMap googleMap) {
+        addHeatMap(appContext, googleMap);
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
+    private void addHeatMap(Context appContext, GoogleMap googleMap) {
+        List<LatLng> list = null;
+        list = readItems(appContext, R.raw.crime);
+        heatmapTileProvider = new HeatmapTileProvider.Builder()
+                .data(list)
+                .build();
+        tileOverlay = googleMap.addTileOverlay(new TileOverlayOptions().tileProvider(heatmapTileProvider));
+    }
 
+    private ArrayList<LatLng> readItems(Context appContext, int resource) {
+        ArrayList<LatLng> list = new ArrayList<LatLng>();
+        InputStream inputStream = appContext.getResources().openRawResource(resource);
+        Scanner coordinatesScanner = new Scanner(inputStream);
+
+        while (coordinatesScanner.hasNext()) {
+            String coordinates = coordinatesScanner.next();
+            String[] splitCoordinates = coordinates.split(",");
+            double lat = Double.parseDouble(splitCoordinates[0]);
+            double lng = Double.parseDouble(splitCoordinates[1]);
+            list.add(new LatLng(lat, lng));
+        }
+        return list;
     }
 }

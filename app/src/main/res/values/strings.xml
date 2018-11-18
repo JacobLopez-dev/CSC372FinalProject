@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">chicagoNeighborhoods</string>
     <string name="google_map_api_key">AIzaSyC3qQfYpQkWTARb036Cg-rUUI1cxvXkYis</string>
-    <string name="kml_url">https://chicagomap.zolk.com/sources/neighborhoods/source.kml</string>
+   <!-- <string name="kml_url">https://chicagomap.zolk.com/sources/neighborhoods/source.kml</string> -->
     <string name="crime_layer">Crime</string>
     <string name="kml_layer">Neighborhood</string>
     <string name="food_layer">Food</string>
@@ -9,7 +9,4 @@
     <string name="drink_layer">Drinks</string>
     <string name="open_drawer">Open nav drawer</string>
     <string name="close_drawer">Close nav drawer</string>
-
-
-
 </resources>

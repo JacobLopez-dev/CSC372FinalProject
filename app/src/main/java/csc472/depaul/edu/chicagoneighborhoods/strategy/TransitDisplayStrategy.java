@@ -1,12 +1,12 @@
 package csc472.depaul.edu.chicagoneighborhoods.strategy;
 
 import android.content.Context;
-import com.google.android.gms.maps.MapView;
 
+import com.google.android.gms.maps.GoogleMap;
 
 public class TransitDisplayStrategy implements MapDisplayStrategy {
     @Override
-    public void display(Context appContext, MapView mapView) {
+    public void displaySelectedData(Context appContext, GoogleMap googleMap) {
 
     }
 }

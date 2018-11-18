@@ -9,13 +9,12 @@ import com.google.android.gms.maps.MapView;
 import csc472.depaul.edu.chicagoneighborhoods.R;
 
 public class NavigationItemStrategyFactory {
-    public static MapDisplayStrategy getMapObjectStrategy(Context appContext, MapView mapView,
-                                                          MenuItem item) {
+    public static MapDisplayStrategy getMapObjectStrategy(Context appContext, MenuItem item) {
         int id = item.getItemId();
         switch (id){
             case R.id.kml_id:
                 Toast.makeText(appContext, "Neighborhood layer", Toast.LENGTH_LONG).show();
-                return new NeighborhoodDisplayStrategy(appContext, mapView);
+                return new NeighborhoodDisplayStrategy();
             case R.id.food_id:
                 Toast.makeText(appContext, "food layer", Toast.LENGTH_LONG).show();
                 return new FoodDisplayStrategy();
@@ -27,9 +26,9 @@ public class NavigationItemStrategyFactory {
                 return new TransitDisplayStrategy();
             case R.id.crime_id:
                 Toast.makeText(appContext, "crime layer", Toast.LENGTH_LONG).show();
-                return new CrimeDisplayStrategy(appContext, mapView);
+                return new CrimeDisplayStrategy();
              default:
-                 return new NeighborhoodDisplayStrategy(appContext, mapView);
+                 return new NeighborhoodDisplayStrategy();
         }
     }
 }

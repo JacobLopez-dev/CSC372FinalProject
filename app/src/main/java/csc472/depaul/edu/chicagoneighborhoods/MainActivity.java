@@ -37,6 +37,7 @@ import csc472.depaul.edu.chicagoneighborhoods.strategy.NavigationItemStrategyFac
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
     private MapView mMap;
+    private GoogleMap googleMap;
     Toolbar toolbar;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -230,6 +231,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             return;
         }
         map.setMyLocationEnabled(true);
+        googleMap = map;
     }
 
     @Override
@@ -252,8 +254,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        MapDisplayStrategy strategy = NavigationItemStrategyFactory.getMapObjectStrategy(getApplicationContext(), mMap, item);
-        strategy.display(getApplicationContext(), mMap);
+        MapDisplayStrategy strategy = NavigationItemStrategyFactory.getMapObjectStrategy(getApplicationContext(), item);
+        strategy.displaySelectedData(getApplicationContext(), googleMap);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }

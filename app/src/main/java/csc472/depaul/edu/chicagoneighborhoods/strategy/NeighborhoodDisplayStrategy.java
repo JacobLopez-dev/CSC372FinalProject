@@ -3,8 +3,6 @@ package csc472.depaul.edu.chicagoneighborhoods.strategy;
 import android.content.Context;
 
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.maps.android.data.kml.KmlLayer;
 
 import org.xmlpull.v1.XmlPullParserException;
@@ -13,27 +11,13 @@ import java.io.IOException;
 
 import csc472.depaul.edu.chicagoneighborhoods.R;
 
-public class NeighborhoodDisplayStrategy  implements MapDisplayStrategy, OnMapReadyCallback {
+public class NeighborhoodDisplayStrategy implements MapDisplayStrategy {
 
-    private Context appContext;
-    private MapView mapView;
-
-    public NeighborhoodDisplayStrategy(Context appContext, MapView mapView) {
-        this.appContext = appContext;
-        this.mapView = mapView;
+    public void displaySelectedData(Context appContext, GoogleMap googleMap) {
+        addNeighborhoodsLayerToMap(appContext, googleMap);
     }
 
-    @Override
-    public void display(Context appContext, MapView mapView) {
-        mapView.getMapAsync(this::onMapReady);
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-       addNeighborhoodsLayerToMap(googleMap);
-    }
-
-    private void addNeighborhoodsLayerToMap(GoogleMap map) {
+    private void addNeighborhoodsLayerToMap(Context appContext, GoogleMap map) {
         try {
             KmlLayer layer = new KmlLayer(map, R.raw.neighorhoods, appContext);
             layer.addLayerToMap();
