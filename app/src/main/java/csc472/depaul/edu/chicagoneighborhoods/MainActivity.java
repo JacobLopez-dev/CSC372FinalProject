@@ -23,8 +23,10 @@ import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -35,33 +37,38 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import csc472.depaul.edu.chicagoneighborhoods.strategy.MapDisplayStrategy;
 import csc472.depaul.edu.chicagoneighborhoods.strategy.NavigationItemStrategyFactory;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
-    private MapView mMap;
-    private GoogleMap googleMap;
-    Toolbar toolbar;
-    DrawerLayout drawerLayout;
-    NavigationView navigationView;
-    private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,
+                                                                GoogleApiClient.OnConnectionFailedListener,
+                                                                NavigationView.OnNavigationItemSelectedListener {
+
     public static final int ERROR_DIALOG_REQUEST = 9001;
     public static final int PERMISSIONS_REQUEST_ENABLE_GPS = 9002;
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 9003;
-    private FusedLocationProviderClient mFusedLocationClient;
+    private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
 
-    private LatLngBounds CHICAGO = new LatLngBounds(
+    private final LatLngBounds CHICAGO = new LatLngBounds(
             new LatLng(41.8781, -87.6298), new LatLng(41.8781, -87.6298));
 
+    private FusedLocationProviderClient mFusedLocationClient;
+    private GoogleMap googleMap;
+    private MapView mMap;
+
     private boolean mLocationPermissionGranted = false;
+
+    Toolbar toolbar;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_drawer);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        navigationView = (NavigationView) findViewById(R.id.map_nav_view);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView =  findViewById(R.id.map_nav_view);
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -80,9 +87,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-    private boolean checkMapServices(){
-        if(isServicesOK()){
-            if(isMapsEnabled()){
+    private boolean checkMapServices() {
+        if (isServicesOK()) {
+            if (isMapsEnabled()) {
                 return true;
             }
         }
@@ -103,10 +110,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         alert.show();
     }
 
-    public boolean isMapsEnabled(){
-        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+    public boolean isMapsEnabled() {
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             buildAlertMessageNoGps();
             return false;
         }
@@ -130,21 +137,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    public boolean isServicesOK(){
+    public boolean isServicesOK() {
         Log.d("", "isServicesOK: checking google services version");
         int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(MainActivity.this);
 
-        if(available == ConnectionResult.SUCCESS){
+        if (available == ConnectionResult.SUCCESS) {
             //everything is fine and the user can make map requests
             Log.d("", "isServicesOK: Google Play Services is workingt");
             return true;
-        }
-        else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)){
+        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
             //an error occured but we can resolve it
             Log.d("", "isServicesOK: an error occured but we can fix it");
             Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(MainActivity.this, available, ERROR_DIALOG_REQUEST);
             dialog.show();
-        }else{
+        } else {
             Toast.makeText(this, "You can't make map requests", Toast.LENGTH_SHORT).show();
         }
         return false;
@@ -172,10 +178,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.d("", "onActivityResult: called");
         switch (requestCode) {
             case PERMISSIONS_REQUEST_ENABLE_GPS: {
-                if(mLocationPermissionGranted){
+                if (mLocationPermissionGranted) {
                     mLocationPermissionGranted = true;
-                }
-                else{
+                } else {
                     getLocationPermission();
                 }
             }
@@ -198,11 +203,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onResume() {
         super.onResume();
-        if(checkMapServices()) {
-            if(mLocationPermissionGranted) {
+        if (checkMapServices()) {
+            if (mLocationPermissionGranted) {
                 mMap.onResume();
-            }
-            else{
+            } else {
                 getLocationPermission();
             }
         }
@@ -223,7 +227,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap map) {
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(CHICAGO.getCenter(), 12));
-        //map.addMarker(new MarkerOptions().position(new LatLng(41.8781, -87.6298)).title("Marker"));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -259,5 +262,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         strategy.displaySelectedData(getApplicationContext(), googleMap);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }
