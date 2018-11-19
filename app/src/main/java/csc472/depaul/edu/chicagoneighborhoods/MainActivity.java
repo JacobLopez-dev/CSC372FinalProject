@@ -114,6 +114,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void getLocationPermission() {
+        /*
+         * Request location permission, so that we can get the location of the
+         * device. The result of the permission request is handled by a callback,
+         * onRequestPermissionsResult.
+         */
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -130,10 +135,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(MainActivity.this);
 
         if(available == ConnectionResult.SUCCESS){
+            //everything is fine and the user can make map requests
             Log.d("", "isServicesOK: Google Play Services is workingt");
             return true;
         }
         else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)){
+            //an error occured but we can resolve it
             Log.d("", "isServicesOK: an error occured but we can fix it");
             Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(MainActivity.this, available, ERROR_DIALOG_REQUEST);
             dialog.show();
@@ -150,6 +157,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mLocationPermissionGranted = false;
         switch (requestCode) {
             case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     mLocationPermissionGranted = true;
@@ -214,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap map) {
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(CHICAGO.getCenter(), 13));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(CHICAGO.getCenter(), 12));
         //map.addMarker(new MarkerOptions().position(new LatLng(41.8781, -87.6298)).title("Marker"));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
@@ -224,6 +232,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         map.setMyLocationEnabled(true);
         map.getUiSettings().setZoomControlsEnabled(true);
+        googleMap = map;
     }
 
     @Override
