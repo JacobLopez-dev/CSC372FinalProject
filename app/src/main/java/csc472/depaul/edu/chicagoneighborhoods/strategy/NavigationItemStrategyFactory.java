@@ -33,8 +33,6 @@ public class NavigationItemStrategyFactory {
 
             case R.id.clear_layers_id:
                 Toast.makeText(appContext, "clearing layers", Toast.LENGTH_LONG).show();
-
-
              default:
                  return new NeighborhoodDisplayStrategy();
         }
