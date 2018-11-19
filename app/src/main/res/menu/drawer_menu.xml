@@ -28,6 +28,11 @@
             android:id="@+id/crime_id"
             android:icon="@drawable/ic_crime_24dp"/>
 
+        <item
+            android:title="@string/clear_layers"
+            android:id="@+id/clear_layers_id"
+            android:icon="@drawable/ic_clear_layers_24dp"/>
+
     </group>
 
 </menu>

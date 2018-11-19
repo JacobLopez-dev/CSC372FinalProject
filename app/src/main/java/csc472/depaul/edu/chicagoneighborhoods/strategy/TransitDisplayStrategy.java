@@ -10,7 +10,6 @@ import csc472.depaul.edu.chicagoneighborhoods.csc472.depaul.edu.chicagoneighborh
 public class TransitDisplayStrategy implements MapDisplayStrategy {
     @Override
     public void displaySelectedData(Context appContext, GoogleMap googleMap) {
-        KmlUtils.addLayerToMap(appContext, googleMap, R.raw.busstops);
         KmlUtils.addLayerToMap(appContext,googleMap, R.raw.railstations);
     }
 }

@@ -7,6 +7,7 @@
     <string name="food_layer">Food</string>
     <string name="transit_layer">Transit</string>
     <string name="drink_layer">Drinks</string>
+    <string name="clear_layers">Clear map</string>
     <string name="open_drawer">Open nav drawer</string>
     <string name="close_drawer">Close nav drawer</string>
 </resources>
